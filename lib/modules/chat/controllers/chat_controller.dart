@@ -8,11 +8,7 @@ class ChatMessage {
   final bool isUser;
   final DateTime timestamp;
 
-  ChatMessage({
-    required this.text,
-    required this.isUser,
-    required this.timestamp,
-  });
+  ChatMessage({required this.text, required this.isUser, required this.timestamp});
 }
 
 class ChatController extends GetxController {
@@ -43,11 +39,7 @@ class ChatController extends GetxController {
     // Add a welcome message if the conversation is empty
     if (messages.isEmpty) {
       messages.add(
-        ChatMessage(
-          text: "Hi! I'm Gemini. How can I help you today?",
-          isUser: false,
-          timestamp: DateTime.now(),
-        ),
+        ChatMessage(text: "Hi! I'm Gemini. How can I help you today?", isUser: false, timestamp: DateTime.now()),
       );
     }
   }
@@ -68,22 +60,20 @@ class ChatController extends GetxController {
     }
 
     try {
-      _model = GenerativeModel(
-        model: 'gemini-1.5-flash',
-        apiKey: key,
-      );
+      _model = GenerativeModel(model: 'gemini-3.5-flash', apiKey: key);
       // We can pre-populate the session history with previous messages if we want,
       // but starting a clean session is simpler. We will build the session history
       // from the existing messages.
       final history = messages
           .where((m) => m.timestamp != messages.first.timestamp) // Skip the welcome message
           .map((m) {
-        if (m.isUser) {
-          return Content.text(m.text);
-        } else {
-          return Content.model([TextPart(m.text)]);
-        }
-      }).toList();
+            if (m.isUser) {
+              return Content.text(m.text);
+            } else {
+              return Content.model([TextPart(m.text)]);
+            }
+          })
+          .toList();
 
       _chatSession = _model!.startChat(history: history);
     } catch (e) {
@@ -94,7 +84,7 @@ class ChatController extends GetxController {
   void setCustomApiKey(String key) {
     customApiKey.value = key.trim();
     _initializeChatSession();
-    
+
     Get.snackbar(
       'API Key Updated',
       key.isEmpty ? 'Using key from environment configuration.' : 'Successfully saved custom API key for this session.',
@@ -122,11 +112,7 @@ class ChatController extends GetxController {
     }
 
     // Add user message to UI
-    final userMessage = ChatMessage(
-      text: text,
-      isUser: true,
-      timestamp: DateTime.now(),
-    );
+    final userMessage = ChatMessage(text: text, isUser: true, timestamp: DateTime.now());
     messages.add(userMessage);
     textController.clear();
     _scrollToBottom();
@@ -149,18 +135,13 @@ class ChatController extends GetxController {
       final responseText = response.text ?? 'No response text received.';
 
       // Add Gemini message to UI
-      messages.add(
-        ChatMessage(
-          text: responseText,
-          isUser: false,
-          timestamp: DateTime.now(),
-        ),
-      );
+      messages.add(ChatMessage(text: responseText, isUser: false, timestamp: DateTime.now()));
     } catch (e) {
       debugPrint('Gemini API Error: $e');
       messages.add(
         ChatMessage(
-          text: 'Sorry, I encountered an error: ${e.toString()}\n\nPlease verify that your API key is valid and you have active quota limits.',
+          text:
+              'Sorry, I encountered an error: ${e.toString()}\n\nPlease verify that your API key is valid and you have active quota limits.',
           isUser: false,
           timestamp: DateTime.now(),
         ),
@@ -174,11 +155,7 @@ class ChatController extends GetxController {
   void clearChat() {
     messages.clear();
     messages.add(
-      ChatMessage(
-        text: "Conversation cleared. How can I help you now?",
-        isUser: false,
-        timestamp: DateTime.now(),
-      ),
+      ChatMessage(text: "Conversation cleared. How can I help you now?", isUser: false, timestamp: DateTime.now()),
     );
     _initializeChatSession();
   }
