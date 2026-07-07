@@ -7,4 +7,7 @@ class AppConstants {
 
   // Deep Link Redirection URL
   static final String redirectUrl = dotenv.env['REDIRECT_URL'] ?? 'io.supabase.sso://login-callback/';
+
+  // Gemini API Configuration
+  static final String geminiApiKey = dotenv.env['GEMINI_API_KEY'] ?? '';
 }

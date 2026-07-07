@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import '../../../core/values/app_colors.dart';
 import '../../../data/models/user_model.dart';
+import '../../../routes/app_routes.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
@@ -148,6 +149,49 @@ class HomeView extends GetView<HomeController> {
               ),
             ),
           ],
+        ),
+        floatingActionButton: Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.googleBlue.withOpacity(0.4),
+                blurRadius: 16,
+                spreadRadius: 2,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: FloatingActionButton(
+            onPressed: () => Get.toNamed(AppRoutes.chat),
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            highlightElevation: 0,
+            child: Ink(
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: LinearGradient(
+                  colors: [
+                    AppColors.googleBlue,
+                    Colors.purpleAccent,
+                    AppColors.googleRed,
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
+              child: Container(
+                width: 56,
+                height: 56,
+                alignment: Alignment.center,
+                child: const Icon(
+                  Icons.auto_awesome,
+                  color: Colors.white,
+                  size: 24,
+                ),
+              ),
+            ),
+          ),
         ),
       ),
     );
